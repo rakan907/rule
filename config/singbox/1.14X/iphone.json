@@ -59,6 +59,7 @@
     "rules": [
       {"type": "logical", "mode": "or", "rules": [{"domain_suffix": "push.apple.com"}, {"rule_set": "geoip-telegram"}], "invert": true, "action": "sniff", "sniffer": ["http", "tls", "stun", "quic", "dns"], "timeout": "100ms"},
       {"type": "logical", "mode": "or", "rules": [{"port": 53}, {"protocol": "dns"}], "action": "hijack-dns"},
+      {"ip_cidr": ["100.64.0.0/10", "fd7a:115c:a1e0::/48"], "action": "route", "outbound": "ts-ep"},
       {"ip_is_private": true, "outbound": "直连"},
       {"type": "logical", "mode": "or", "rules": [{"port": 853}, {"protocol": ["stun", "quic"]}], "action": "reject", "no_drop": true},
       {"network": "icmp", "action": "resolve"},
@@ -123,6 +124,13 @@
       "type": "mixed",
       "listen": "127.0.0.1",
       "listen_port": 7890
+    }
+  ],
+  "endpoints": [
+    {
+      "type": "tailscale",
+      "tag": "ts-ep",
+      "state_directory": "tailscale"
     }
   ],
   "experimental": {
